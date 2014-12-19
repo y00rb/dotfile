@@ -1,0 +1,5 @@
+alias aliases='vim ~/Programming/.dotfiles/.zsh/aliases'
+alias bui='bundle install'
+alias fs='foreman start'
+alias jsource='cd ~/Programming/learning/source_codes'
+alias jupcase='cd ~/Programming/learning/upcase'
