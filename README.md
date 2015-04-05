@@ -9,7 +9,7 @@ shell.
 ## Installation(to be continue)
 ```bash
 git clone git@github.com:y00rb/dotfile.git ~/.my_dotfiles
-cd ~/.dotfiles
+cd ~/.my_dotfiles
 ```
 
 
