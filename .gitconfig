@@ -1,0 +1,11 @@
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	ui = auto
+	interactive = auto
+[merge]
+	tool = opendiff
+[user]
+	name = Yang Bo
+	email = yangbodotnet@gmail.com
