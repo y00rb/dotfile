@@ -79,3 +79,6 @@ export PATH="$PATH:$GOPATH/bin"
 # jruby
 export JRUBY_OPTS=--2.0
 source $HOME/.zsh/aliasesrc
+
+#THIS MUST BE AT THE END OF THE FILE FOR GVM TO WORK!!!
+[[ -s "/Users/Paul/.gvm/bin/gvm-init.sh" ]] && source "/Users/Paul/.gvm/bin/gvm-init.sh"
