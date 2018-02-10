@@ -22,7 +22,7 @@ endif
 runtime macros/matchit.vim
 color Tomorrow-Night-Bright
 set background=dark
-set guifont=Monaco:h13
+set guifont=Monaco:h15
 "colorscheme solarized
 let g:solarized_termcolors = 256
 let g:solarized_visibility = "high"
