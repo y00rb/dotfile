@@ -43,6 +43,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'sjl/gundo.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'garbas/vim-snipmate'
+Plugin 'SirVer/ultisnips'
 Plugin 'tomtom/tlib_vim'
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'scrooloose/syntastic'
@@ -73,6 +74,10 @@ Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'kana/vim-textobj-user'
 Plugin 'lokaltog/vim-powerline'
+Plugin 'sbdchd/neoformat'
+Plugin 'prettier/vim-prettier', { 'do': 'npm install' }
+Plugin 'mxw/vim-jsx'
+
 
 call vundle#end()            " required
 filetype plugin indent on    " required
