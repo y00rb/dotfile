@@ -31,6 +31,7 @@ Plugin 'slim-template/vim-slim'
 Plugin 'jimenezrick/vimerl'
 Plugin 'sunaku/vim-ruby-minitest'
 Plugin 'elixir-lang/vim-elixir'
+Plugin 'c-brenn/phoenix.vim'
 Plugin 'tpope/vim-liquid'
 Plugin 'depuracao/vim-rdoc'
 Plugin 'fatih/vim-go'
@@ -78,6 +79,7 @@ Plugin 'sbdchd/neoformat'
 Plugin 'prettier/vim-prettier', { 'do': 'npm install' }
 Plugin 'mxw/vim-jsx'
 
+Plugin 'posva/vim-vue'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
