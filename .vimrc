@@ -29,6 +29,13 @@ let g:solarized_visibility = "high"
 let g:solarized_contrast = "high"
 let g:ruby_path = system('rvm current')
 
+" Change cursor shape between insert and normal mode in iTerm2.app
+if $TERM_PROGRAM =~ "iTerm"
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
 " Status Line
 if has("statusline") && !&cp
   set laststatus=2  " always show the status bar
