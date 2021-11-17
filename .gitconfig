@@ -1,11 +1,17 @@
 [color]
-	diff = auto
-	status = auto
-	branch = auto
-	ui = auto
-	interactive = auto
+  diff = auto
+  status = auto
+  branch = auto
+  ui = auto
+ interactive = auto
 [merge]
-	tool = opendiff
+  tool = opendiff
 [user]
-	name = Yang Bo
-	email = yangbodotnet@gmail.com
+  name = Yang Bo
+  email = yangbodotnet@gmail.com
+[core]
+  editor = /usr/local/bin/vim
+[alias]
+  sla = log --online --decorate --graph --all
+[fetch]
+  prune = true
