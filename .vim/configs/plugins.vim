@@ -75,7 +75,7 @@ Plugin 'rizzatti/dash.vim'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'kana/vim-textobj-user'
-Plugin 'powerline/powerline'
+Plugin 'powerline/powerline', {'rtp': 'powerline/bindings/vim'}
 Plugin 'sbdchd/neoformat'
 Plugin 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plugin 'mxw/vim-jsx'

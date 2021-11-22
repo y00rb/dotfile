@@ -22,7 +22,7 @@ endif
 runtime macros/matchit.vim
 color Tomorrow-Night-Bright
 set background=dark
-set guifont=Monaco:h15
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h15
 "colorscheme solarized
 let g:solarized_termcolors = 256
 let g:solarized_visibility = "high"
@@ -37,21 +37,40 @@ if $TERM_PROGRAM =~ "iTerm"
 endif
 
 " Status Line
-if has("statusline") && !&cp
-  set laststatus=2  " always show the status bar
+"if has("statusline") && !&cp
+  ""set laststatus=2  " always show the status bar
 
-  " Start the status line
-  set statusline=%f\ %m\ %r
-  set statusline+=Line:%l/%L[%p%%]
-  set statusline+=Col:%v
-  set statusline+=Buf:#%n
-  set statusline+=[%b][0x%B]
+  """ Start the status line
+  "set statusline=%f\ %m\ %r
+  "set statusline+=Line:%l/%L[%p%%]
+  "set statusline+=Col:%v
+  "set statusline+=Buf:#%n
+  "set statusline+=[%b][0x%B]
 
-  set statusline+=%{fugitive#statusline()}
-  set statusline+=%#warningmsg#
-  set statusline+=%{SyntasticStatuslineFlag()}
-  set statusline+=%*
+  "set statusline+=%{fugitive#statusline()}
+  "set statusline+=%#warningmsg#
+  "set statusline+=%{SyntasticStatuslineFlag()}
+  "set statusline+=%*
+"endif
+
+" These lines setup the environment to show graphics and colors correctly.
+set rtp+=/opt/homebrew/lib/python3.9/site-packages/powerline/bindings/vim
+set nocompatible
+set t_Co=256
+
+let g:minBufExplForceSyntaxEnable = 1
+
+if ! has('gui_running')
+   set ttimeoutlen=10
+   augroup FastEscape
+      autocmd!
+      au InsertEnter * set timeoutlen=0
+      au InsertLeave * set timeoutlen=1000
+   augroup END
 endif
+
+set laststatus=2 " Always display the statusline in all windows
+set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 
 "For switch current windows
 map <C-h> <C-w>h
@@ -104,3 +123,5 @@ au Syntax * RainbowParenthesesLoadBraces
 runtime macros/matchit.vim
 
 source ~/.vim/configs/ruby-block.vim
+
+let g:snipMate = { 'snippet_version' : 1 }
