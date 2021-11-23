@@ -12,4 +12,7 @@ git clone git@github.com:y00rb/dotfile.git ~/.my_dotfiles
 cd ~/.my_dotfiles
 ```
 
+```bash
+cp zsh .zshrc
+```
 
