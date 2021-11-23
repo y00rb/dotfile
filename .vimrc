@@ -54,6 +54,7 @@ endif
 "endif
 
 " These lines setup the environment to show graphics and colors correctly.
+" the path show in 'pip3 show powerline-status'
 set rtp+=/opt/homebrew/lib/python3.9/site-packages/powerline/bindings/vim
 set nocompatible
 set t_Co=256
