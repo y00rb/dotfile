@@ -36,6 +36,7 @@ Plugin 'tpope/vim-projectionist'
 Plugin 'tpope/vim-liquid'
 Plugin 'depuracao/vim-rdoc'
 Plugin 'fatih/vim-go'
+Plugin 'maralla/completor.vim'
 Plugin 'SirVer/ultisnips'
 
 Plugin 'tpope/vim-unimpaired'
