@@ -1,0 +1,21 @@
+zt() {
+  local dir
+  dir=$(zoxide query --list | fzf --height 40% --reverse --prompt="  " --border-label=" zt " --query="$*") || return 0
+
+  local session_name
+  session_name=$(basename "$dir" | tr '.' '_')
+
+  # If already inside tmux, create/switch session
+  if [ -n "$TMUX" ]; then
+    if ! tmux has-session -t="$session_name" 2>/dev/null; then
+      tmux new-session -d -s "$session_name" -c "$dir"
+    fi
+    tmux switch-client -t "$session_name"
+  else
+    if ! tmux has-session -t="$session_name" 2>/dev/null; then
+      tmux new-session -s "$session_name" -c "$dir"
+    else
+      tmux attach-session -t "$session_name"
+    fi
+  fi
+}

@@ -1,0 +1,35 @@
+# oh-my-ghostty defaults (Omarchy-inspired Ghostty config)
+
+# Use Catppuccin Mocha theme from ~/.config/ghostty/themes/
+theme = catppuccin-mocha.conf
+
+# Font
+font-family = JetBrains Mono
+font-size = 15
+
+# Window
+window-theme = auto
+window-decoration = auto
+window-padding-x = 10
+window-padding-y = 10
+window-padding-balance = true
+resize-overlay = never
+confirm-close-surface = false
+
+# Cursor + shell integration
+cursor-style = block
+cursor-style-blink = false
+shell-integration-features = no-cursor,ssh-env
+macos-option-as-alt = true
+
+# Input behavior
+mouse-hide-while-typing = true
+mouse-scroll-multiplier = 0.95
+
+# Keyboard bindings
+keybind = shift+insert=paste_from_clipboard
+keybind = control+insert=copy_to_clipboard
+keybind = super+control+shift+alt+arrow_down=resize_split:down,100
+keybind = super+control+shift+alt+arrow_up=resize_split:up,100
+keybind = super+control+shift+alt+arrow_left=resize_split:left,100
+keybind = super+control+shift+alt+arrow_right=resize_split:right,100
