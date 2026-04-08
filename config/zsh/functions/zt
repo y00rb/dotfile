@@ -1,21 +1,99 @@
 zt() {
-  local dir
-  dir=$(zoxide query --list | fzf --height 40% --reverse --prompt="  " --border-label=" zt " --query="$*") || return 0
+  case "${1:-connect}" in
+    list)    _zt_list ;;
+    connect) _zt_connect "${@:2}" ;;
+    kill)    _zt_kill "${@:2}" ;;
+    *)       _zt_connect "$@" ;;
+  esac
+}
 
+# Icons & colors (matching sesh style)
+ZT_ICON_TMUX=$'\uebc8'      # tmux icon (color: 34 cyan)
+ZT_ICON_ZOXIDE=$'\uf07c'    # zoxide icon (color: 36 teal)
+ZT_CLR_TMUX=$'\e[34m'
+ZT_CLR_ZOXIDE=$'\e[36m'
+ZT_CLR_RESET=$'\e[0m'
+
+ZT_ICON_DIR=$'\uf115'       # dir icon (color: 90 gray)
+ZT_CLR_DIR=$'\e[90m'
+
+_zt_list() {
+  tmux list-sessions -F "${ZT_CLR_TMUX}${ZT_ICON_TMUX} #{session_name}${ZT_CLR_RESET}" 2>/dev/null
+  zoxide query --list | while IFS= read -r d; do
+    echo "${ZT_CLR_ZOXIDE}${ZT_ICON_ZOXIDE} ${d}${ZT_CLR_RESET}"
+  done
+}
+
+_zt_reload() {
+  _zt_list
+  local query="$1"
+  if [ -n "$query" ]; then
+    fd --type d --max-depth 4 "$query" "$HOME" 2>/dev/null \
+      | head -5 \
+      | while IFS= read -r d; do
+          echo "${ZT_CLR_DIR}${ZT_ICON_DIR} ${d}${ZT_CLR_RESET}"
+        done
+  fi
+}
+
+_zt_connect() {
+  local selected
+  local zt_src="$HOME/.config/zsh/functions/zt"
+  selected=$(_zt_list | awk '!seen[$0]++' | \
+    fzf --ansi --height 40% --reverse \
+      --prompt="  " --border-label=" zt " --query="$*" --scheme=path \
+      --border=rounded --border-label-pos=3 \
+      --color="bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8" \
+      --color="fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc" \
+      --color="marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8" \
+      --color="border:#6c7086,label:#94e2d5" \
+      --bind "change:reload:zsh -c 'source $zt_src && _zt_reload {q}' || true" \
+  ) || return 0
+
+  # Strip ANSI codes and icon prefix
+  local entry
+  entry=$(echo "$selected" | sed 's/\x1b\[[0-9;]*m//g')
+  entry="${entry:2}"
+
+  # Existing tmux session — switch/attach
+  if tmux has-session -t="$entry" 2>/dev/null; then
+    if [ -n "$TMUX" ]; then
+      tmux switch-client -t "$entry"
+    else
+      tmux attach-session -t "$entry"
+    fi
+    return
+  fi
+
+  # Directory path — create/attach session
   local session_name
-  session_name=$(basename "$dir" | tr '.' '_')
+  session_name=$(basename "$entry" | tr '.' '_')
 
-  # If already inside tmux, create/switch session
   if [ -n "$TMUX" ]; then
     if ! tmux has-session -t="$session_name" 2>/dev/null; then
-      tmux new-session -d -s "$session_name" -c "$dir"
+      tmux new-session -d -s "$session_name" -c "$entry"
     fi
     tmux switch-client -t "$session_name"
   else
     if ! tmux has-session -t="$session_name" 2>/dev/null; then
-      tmux new-session -s "$session_name" -c "$dir"
+      tmux new-session -s "$session_name" -c "$entry"
     else
       tmux attach-session -t "$session_name"
     fi
   fi
+}
+
+_zt_kill() {
+  local session
+  session=$(tmux list-sessions -F "${ZT_CLR_TMUX}${ZT_ICON_TMUX} #{session_name}${ZT_CLR_RESET}" 2>/dev/null | \
+    fzf --ansi --height 40% --reverse --prompt="  " --border-label=" zt kill " \
+      --border=rounded --border-label-pos=3 \
+      --color="bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8" \
+      --color="fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc" \
+      --color="marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8" \
+      --color="border:#6c7086,label:#94e2d5" \
+  ) || return 0
+  local name
+  name=$(echo "$session" | sed 's/\x1b\[[0-9;]*m//g')
+  tmux kill-session -t="${name:2}"
 }
