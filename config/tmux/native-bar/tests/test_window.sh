@@ -31,5 +31,24 @@ assert_not_matches window-status-current-format '#[0-9a-fA-F]{6}'
 # Window index must survive as a format, not be expanded at build time.
 assert_contains window-status-format "#I"
 
+# Window flags (active, last, bell, zoom...) must be rendered. The old bar showed
+# them and spec 2 assumes layout parity with it; dropping them silently loses the
+# marker that tells you which window is which.
+assert_contains window-status-format         "@tnb_window_flags"
+assert_contains window-status-current-format "@tnb_window_flags"
+
+# Default is tmux's own #F, so the plugin needs no Nerd Font to show flags.
+assert_equals @tnb_window_flags "#F"
+
+# An override must be honoured rather than baked over.
+tmux -L "$TNB_SOCKET" set-option -g @tnb_window_flags "ZZZ"
+assert_contains "window-status-format" "@tnb_window_flags"
+exp="$(tmux -L "$TNB_SOCKET" display -p '#{E:window-status-format}' 2>/dev/null)"
+case "$exp" in
+  *ZZZ*) printf 'ok: @tnb_window_flags override reaches the rendered format\n' ;;
+  *) printf 'FAIL: override not rendered -- [%s]\n' "$exp" >&2
+     TNB_FAILS=$((TNB_FAILS + 1)) ;;
+esac
+
 tnb_shutdown
 exit $TNB_FAILS

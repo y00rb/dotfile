@@ -16,10 +16,17 @@ set -eu
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 . "$DIR/palette.sh"
 
+# Window flags (active, last, bell, activity, zoom...). Defaults to tmux's own
+# #F so flags work without a Nerd Font; override @tnb_window_flags to use glyphs.
+# Referenced rather than interpolated, so changing it needs no rebuild.
+if [ -z "$(tmux show-option -gqv @tnb_window_flags 2>/dev/null)" ]; then
+  tmux set-option -g @tnb_window_flags "#F"
+fi
+
 build() {  # <badge_colour> <body_colour> <text_format>
   printf '%s' "$(tnb_cap_left "$1")"
-  printf '#[none]#[fg=%s,bg=default,reverse] #I ' "$1"
-  printf '#[none]#[fg=default,bg=%s] %s ' "$2" "$3"
+  printf '#[none]#[fg=%s,bg=default,reverse]#I ' "$1"
+  printf '#[none]#[fg=default,bg=%s] %s#{E:@tnb_window_flags} ' "$2" "$3"
   printf '%s' "$(tnb_cap_right "$2")"
 }
 
@@ -31,4 +38,4 @@ cbody="$(tnb_color window_current_body    black   surface_1)"
 tmux set-option -g window-status-format \
   "$(build "$num" "$body" '#W')"
 tmux set-option -g window-status-current-format \
-  "$(build "$cnum" "$cbody" '#W#{?window_zoomed_flag, +,}')"
+  "$(build "$cnum" "$cbody" '#W')"
