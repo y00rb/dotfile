@@ -31,6 +31,14 @@ tnb_opt() {
   if [ -n "$v" ]; then printf '%s' "$v"; else printf '%s' "$2"; fi
 }
 
+# THEME SUPPORT (spec 4.3): the ansi default covers the three DARK Catppuccin
+# flavours. Latte needs @tnb_palette catppuccin -- ANSI slot 0 is dark in every
+# flavour, so on a light background the pill body would be dark-on-dark (1.28:1).
+# The bridge reads @thm_surface_0/@thm_mauve instead, which are light-theme
+# correct (5.17:1 / 4.79:1), at the cost of emitting hex and therefore no longer
+# following the terminal. That trade is deliberate and is the bridge's reason to
+# exist; it is also the one place the no-hex rule is waived (see tests/test_bridge.sh).
+#
 # tnb_color <role> <ansi_default> <thm_name>
 # Precedence: @tnb_<role>_color > @thm_<thm_name> (catppuccin mode only) > ansi default.
 # Never returns empty: an empty colour makes "fg=" which tmux rejects, which would
