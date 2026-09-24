@@ -16,6 +16,12 @@ assert_contains    @tnb_status_git $'\xee\x82\xb4'
 assert_contains    @tnb_status_git "@tnb_module_git_text"
 assert_not_matches @tnb_status_git '#[0-9a-fA-F]{6}'
 
+# The icon badge must not carry a leading space: that makes every module pill a
+# column wider than the bar this replaces, which reads as a sizing glitch. The
+# window builder has the same rule.
+assert_contains     @tnb_status_git "reverse]#{@tnb_module_git_icon}"
+assert_not_contains @tnb_status_git "reverse] #{@tnb_module_git_icon}"
+
 # Review Focus 2: _color unset must default, never emit an empty colour.
 S @tnb_module_bare_text " x"
 build

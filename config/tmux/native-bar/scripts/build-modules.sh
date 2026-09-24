@@ -36,7 +36,9 @@ done
 for name in $names; do
   color="$(tnb_mod_color "$name")"
   value="$(tnb_cap_left "$color")"
-  value="$value#[none]#[fg=$color,bg=default,reverse] #{@tnb_module_${name}_icon} "
+  # No leading space before the icon: the badge would otherwise be a column wider
+  # than the bar this replaces. Matches build-window.sh's number badge.
+  value="$value#[none]#[fg=$color,bg=default,reverse]#{@tnb_module_${name}_icon} "
   value="$value#[none]#[fg=default,bg=$body] #{E:@tnb_module_${name}_text} "
   value="$value$(tnb_cap_right "$body")"
   tmux set-option -g "@tnb_status_$name" "$value"
