@@ -1,7 +1,8 @@
 # oh-my-ghostty defaults (Omarchy-inspired Ghostty config)
 
-# Use Catppuccin Mocha theme from ~/.config/ghostty/themes/
-theme = catppuccin-mocha.conf
+# Use Catppuccin theme from ~/.config/ghostty/themes/
+# tmux follows this automatically -- see config/tmux/tmux.conf
+theme = catppuccin-frappe.conf
 
 # Font
 font-family = JetBrains Mono
