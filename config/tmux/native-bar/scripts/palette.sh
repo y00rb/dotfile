@@ -38,8 +38,15 @@ tnb_color() {
 # tnb_mod_color <name>
 # A tmux FORMAT (not a value) yielding the module colour, defaulting to white.
 # Emitted rather than resolved so retuning the colour needs no rebuild.
+#
+# The value branch uses #{E:...}, not #{...}: a module colour may itself be a
+# format -- the session module's "#{?client_prefix,red,green}" is exactly that --
+# and plain substitution inserts it without re-expanding, leaving
+# "fg=#{?client_prefix,red,green}" inside a style spec, which tmux cannot parse.
+# The empty-check branch deliberately stays unexpanded, since it tests whether
+# the option is set at all.
 tnb_mod_color() {
-  printf '#{?#{==:#{@tnb_module_%s_color},},white,#{@tnb_module_%s_color}}' "$1" "$1"
+  printf '#{?#{==:#{@tnb_module_%s_color},},white,#{E:@tnb_module_%s_color}}' "$1" "$1"
 }
 
 # tnb_cap_left <colour_expr> / tnb_cap_right <colour_expr>

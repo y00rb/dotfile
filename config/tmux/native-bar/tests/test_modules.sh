@@ -40,5 +40,20 @@ tmux -L "$TNB_SOCKET" set-option -gu @tnb_module_git_text
 build
 assert_equals @tnb_status_git ""
 
+# A module colour that is ITSELF a tmux format -- the session module's prefix
+# conditional is exactly this -- must resolve to a real colour once the status
+# line is expanded. #{@opt} substitutes the value without re-expanding it, which
+# leaves "fg=#{?client_prefix,red,green}" inside a style spec: not a colour tmux
+# can parse, so the style is dropped and the pill loses its colour.
+S @tnb_module_dyn_color "#{?client_prefix,red,green}"
+S @tnb_module_dyn_text  " z"
+build
+exp="$(tmux -L "$TNB_SOCKET" display -p '#{E:@tnb_status_dyn}' 2>/dev/null)"
+case "$exp" in
+  *"fg=green"*) printf 'ok: format-valued module colour resolves to a real colour\n' ;;
+  *) printf 'FAIL: unresolved colour format -- [%s]\n' "$exp" >&2
+     TNB_FAILS=$((TNB_FAILS + 1)) ;;
+esac
+
 tnb_shutdown
 exit $TNB_FAILS
