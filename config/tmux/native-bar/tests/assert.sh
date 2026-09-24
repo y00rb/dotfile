@@ -12,6 +12,9 @@ tnb_boot() {
 
 tnb_shutdown() {
   tmux -L "$TNB_SOCKET" kill-server 2>/dev/null
+  # kill-server leaves the unix socket inode behind, and TNB_SOCKET embeds $$ so
+  # the name is never reused -- one dead socket per test file per run, forever.
+  rm -f "${TMUX_TMPDIR:-/tmp}/tmux-$(id -u)/$TNB_SOCKET" 2>/dev/null
   [ -n "${TNB_BIN:-}" ] && rm -rf "$TNB_BIN"
   return 0
 }

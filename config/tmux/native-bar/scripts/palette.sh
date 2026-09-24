@@ -12,6 +12,18 @@
 TNB_CAP_L=$'\xee\x82\xb6'   # U+E0B6 left half circle
 TNB_CAP_R=$'\xee\x82\xb4'   # U+E0B4 right half circle
 
+# tnb_is_set <option>
+# True when the option has been set AT ALL, including set to the empty string.
+# `show-option -gqv` cannot distinguish those: it prints nothing either way. The
+# non-v form prints "@x ''" when set-to-empty and nothing when unset.
+#
+# This matters only for SEEDING defaults, where empty is a legitimate user choice
+# meaning "no icon" / "no flags". Colour resolution deliberately treats empty as
+# absent, since an empty colour emits "fg=" and tmux drops the whole format.
+tnb_is_set() {
+  [ -n "$(tmux show-option -gq "$1" 2>/dev/null)" ]
+}
+
 # tnb_opt <option> <default>
 tnb_opt() {
   local v

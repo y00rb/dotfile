@@ -19,8 +19,8 @@ assert_not_matches @tnb_status_git '#[0-9a-fA-F]{6}'
 # The icon badge must not carry a leading space: that makes every module pill a
 # column wider than the bar this replaces, which reads as a sizing glitch. The
 # window builder has the same rule.
-assert_contains     @tnb_status_git "reverse]#{@tnb_module_git_icon}"
-assert_not_contains @tnb_status_git "reverse] #{@tnb_module_git_icon}"
+assert_contains     @tnb_status_git "reverse]#{E:@tnb_module_git_icon}"
+assert_not_contains @tnb_status_git "reverse] #{"
 
 # Review Focus 2: _color unset must default, never emit an empty colour.
 S @tnb_module_bare_text " x"
@@ -59,6 +59,22 @@ case "$exp" in
   *"fg=green"*) printf 'ok: format-valued module colour resolves to a real colour\n' ;;
   *) printf 'FAIL: unresolved colour format -- [%s]\n' "$exp" >&2
      TNB_FAILS=$((TNB_FAILS + 1)) ;;
+esac
+
+# An icon that is itself a format must expand, exactly as _color and _text do.
+# Substituting it unexpanded leaves "#{?client_prefix,!,S}" printed literally in
+# the bar. Same bug class as the module-colour fix; _icon was the one sibling
+# still using plain substitution.
+S @tnb_module_ico_color green
+S @tnb_module_ico_icon  "#{?client_prefix,!,S}"
+S @tnb_module_ico_text  " t"
+build
+exp="$(tmux -L "$TNB_SOCKET" display -p '#{E:@tnb_status_ico}' 2>/dev/null)"
+case "$exp" in
+  *"#{?client_prefix"*) printf 'FAIL: icon left unexpanded -- [%s]\n' "$exp" >&2
+                        TNB_FAILS=$((TNB_FAILS + 1)) ;;
+  *S*) printf 'ok: format-valued module icon expands\n' ;;
+  *) printf 'FAIL: icon missing -- [%s]\n' "$exp" >&2; TNB_FAILS=$((TNB_FAILS + 1)) ;;
 esac
 
 tnb_shutdown

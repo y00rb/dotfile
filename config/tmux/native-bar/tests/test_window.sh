@@ -50,5 +50,20 @@ case "$exp" in
      TNB_FAILS=$((TNB_FAILS + 1)) ;;
 esac
 
+# @tnb_caps square was the one branch no test executed, and it is the only one
+# that sets bg without fg -- the shape most likely to break from a later edit.
+tmux -L "$TNB_SOCKET" set-option -g @tnb_caps square
+tnb_run bash "$DIR/../scripts/build-window.sh"
+assert_not_contains window-status-format $'\xee\x82\xb6'
+assert_not_contains window-status-format $'\xee\x82\xb4'
+assert_contains     window-status-format "bg=white"
+assert_not_contains window-status-format "fg=,"
+assert_not_matches  window-status-format '#[0-9a-fA-F]{6}'
+
+tmux -L "$TNB_SOCKET" set-option -g @tnb_caps none
+tnb_run bash "$DIR/../scripts/build-window.sh"
+assert_not_contains window-status-format $'\xee\x82\xb6'
+assert_contains     window-status-format "#I"
+
 tnb_shutdown
 exit $TNB_FAILS

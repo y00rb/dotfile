@@ -5,10 +5,15 @@
 # be idempotent and must not clobber values the user has set.
 set -eu
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+. "$DIR/scripts/palette.sh"
 
-# seed <option> <value> -- only when the user has not set it.
+# seed <option> <value> -- only when the user has not set it AT ALL.
+# Uses tnb_is_set, not [ -z "$(show-option -gqv ...)" ]: setting an option to the
+# empty string is how a user says "no icon" / "no flags", and the -gqv form
+# reports that identically to unset, so the default was written back over the
+# user's choice on every run.
 seed() {
-  if [ -z "$(tmux show-option -gqv "$1" 2>/dev/null)" ]; then
+  if ! tnb_is_set "$1"; then
     tmux set-option -g "$1" "$2"
   fi
 }

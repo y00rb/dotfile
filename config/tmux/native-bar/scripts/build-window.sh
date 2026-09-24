@@ -19,7 +19,7 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 # Window flags (active, last, bell, activity, zoom...). Defaults to tmux's own
 # #F so flags work without a Nerd Font; override @tnb_window_flags to use glyphs.
 # Referenced rather than interpolated, so changing it needs no rebuild.
-if [ -z "$(tmux show-option -gqv @tnb_window_flags 2>/dev/null)" ]; then
+if ! tnb_is_set @tnb_window_flags; then
   tmux set-option -g @tnb_window_flags "#F"
 fi
 

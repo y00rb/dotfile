@@ -34,5 +34,28 @@ run_entry
 assert_equals   @tnb_module_session_color "cyan"
 assert_contains @tnb_status_session "@tnb_module_session_text"
 
+# A user must be able to say "no icon" / "no flags" by setting the option EMPTY.
+# seed() testing with -gqv + [ -z ] cannot tell set-to-empty from unset, so it
+# writes its default back over the user's deliberate choice -- on first load and
+# again on every prefix+M. This is the one contract the entrypoint promises.
+tmux -L "$TNB_SOCKET" set-option -g @tnb_module_session_icon ""
+tmux -L "$TNB_SOCKET" set-option -g @tnb_window_flags ""
+run_entry
+assert_equals @tnb_module_session_icon ""
+assert_equals @tnb_window_flags ""
+
+# Spec 13: the plugin owns none of these. Captured before and compared after,
+# rather than asserted against literals -- the point is that the entrypoint does
+# not touch them, whatever their value happens to be.
+sl_before="$(tnb_get status-left)"
+sr_before="$(tnb_get status-right)"
+sp_before="$(tnb_get status-position)"
+sj_before="$(tnb_get status-justify)"
+run_entry
+assert_equals status-left     "$sl_before"
+assert_equals status-right    "$sr_before"
+assert_equals status-position "$sp_before"
+assert_equals status-justify  "$sj_before"
+
 tnb_shutdown
 exit $TNB_FAILS
