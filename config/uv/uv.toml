@@ -1,0 +1,3 @@
+# Let mise own Python versions; uv only manages project venvs and reuses
+# mise-installed (system) interpreters instead of downloading its own.
+python-preference = "only-system"

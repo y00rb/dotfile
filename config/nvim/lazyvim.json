@@ -1,6 +1,9 @@
 {
   "extras": [
+    "lazyvim.plugins.extras.ai.copilot",
+    "lazyvim.plugins.extras.ai.copilot-chat",
     "lazyvim.plugins.extras.dap.core",
+    "lazyvim.plugins.extras.editor.fzf",
     "lazyvim.plugins.extras.editor.refactoring",
     "lazyvim.plugins.extras.lang.cmake",
     "lazyvim.plugins.extras.lang.docker",
@@ -18,8 +21,9 @@
     "lazyvim.plugins.extras.lang.yaml",
     "lazyvim.plugins.extras.vscode"
   ],
+  "install_version": 7,
   "news": {
-    "NEWS.md": "7429"
+    "NEWS.md": "11866"
   },
-  "version": 7
+  "version": 8
 }

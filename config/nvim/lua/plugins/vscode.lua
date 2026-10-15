@@ -30,20 +30,19 @@ Config.options.defaults.cond = function(plugin)
 end
 vim.g.snacks_animate = false
 
--- Add some vscode specific keymaps
 vim.api.nvim_create_autocmd("User", {
   pattern = "LazyVimKeymapsDefaults",
   callback = function()
-    -- VSCode-specific keymaps for search and navigation
+    -- Search shortcuts.
     vim.keymap.set("n", "<leader><space>", "<cmd>Find<cr>")
     vim.keymap.set("n", "<leader>/", [[<cmd>lua require('vscode').action('workbench.action.findInFiles')<cr>]])
     vim.keymap.set("n", "<leader>ss", [[<cmd>lua require('vscode').action('workbench.action.gotoSymbol')<cr>]])
 
-    -- Keep undo/redo lists in sync with VsCode
+    -- Sync undo history.
     vim.keymap.set("n", "u", "<Cmd>call VSCodeNotify('undo')<CR>")
     vim.keymap.set("n", "<C-r>", "<Cmd>call VSCodeNotify('redo')<CR>")
 
-    -- Navigate VSCode tabs like lazyvim buffers
+    -- Navigate tabs.
     vim.keymap.set("n", "<S-h>", "<Cmd>call VSCodeNotify('workbench.action.previousEditor')<CR>")
     vim.keymap.set("n", "<S-l>", "<Cmd>call VSCodeNotify('workbench.action.nextEditor')<CR>")
   end,
@@ -67,7 +66,6 @@ return {
     "LazyVim/LazyVim",
     config = function(_, opts)
       opts = opts or {}
-      -- disable the colorscheme
       opts.colorscheme = function() end
       require("lazyvim").setup(opts)
     end,

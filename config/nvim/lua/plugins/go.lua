@@ -1,6 +1,6 @@
 return {
   "ray-x/go.nvim",
-  dependencies = { -- optional packages
+  dependencies = {
     "ray-x/guihua.lua",
     "neovim/nvim-lspconfig",
     "nvim-treesitter/nvim-treesitter",
@@ -8,7 +8,7 @@ return {
   config = function()
     require("go").setup()
 
-    -- Run gofmt + goimport on save
+    -- Format on save.
     local format_sync_grp = vim.api.nvim_create_augroup("GoImport", {})
     vim.api.nvim_create_autocmd("BufWritePre", {
       pattern = "*.go",
@@ -20,7 +20,8 @@ return {
   end,
   event = { "CmdlineEnter" },
   ft = { "go", "gomod" },
-  build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
+  -- Install Go tools.
+  build = ':lua require("go.install").update_all_sync()',
 
   keys = {
     { "<leader>gaj", "<cmd>GoAddTag<cr>", desc = "Add json tags" },

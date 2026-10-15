@@ -1,0 +1,161 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "edit_predictions": {
+    "allow_data_collection": "no"
+  },
+  "cli_default_open_behavior": "new_window",
+  "project_panel": {
+    "hide_gitignore": true,
+    "dock": "left"
+  },
+  "relative_line_numbers": "enabled",
+  "agent": {
+    "dock": "right",
+    "default_profile": "ask",
+    "default_model": {
+      "effort": "high",
+      "provider": "copilot_chat",
+      "model": "gpt-5-mini",
+      "enable_thinking": true
+    },
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "icon_theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Frappé"
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+    "anthropic_retention": false
+  },
+  "vim_mode": true,
+
+  // Inlay hints: global toggle (required for the LSP hints below to show).
+  "inlay_hints": {
+    "enabled": true,
+    "show_parameter_hints": false,
+    "show_type_hints": true
+  },
+  // Reference/implementation counts above functions, classes, interfaces.
+  "code_lens": "on",
+
+  // JavaScript / TypeScript / TSX.
+  // Native in Zed: default LSP is vtsls, default formatter is Prettier.
+  "languages": {
+    // Go: native support. gopls is auto-detected from PATH (mise shims).
+    // Inlay hints & test code lens are already covered by the global
+    // "inlay_hints" and "code_lens" settings above.
+    "Go": {
+      "format_on_save": "on", // gofmt on save
+      "code_actions_on_format": {
+        "source.organizeImports": true // goimports: tidy & sort imports
+      }
+    },
+    // Rust: native support. rust-analyzer is auto-detected from PATH
+    // (~/.cargo/bin). Inlay hints & code lens come from the global settings.
+    "Rust": {
+      "format_on_save": "on" // rustfmt on save
+    },
+    // Ruby: needs the "Ruby" extension. Uses ruby-lsp (global, from mise).
+    // No format-on-save by choice. Legacy Ruby projects run in containers.
+    "Ruby": {
+      "language_servers": ["ruby-lsp", "!solargraph", "!rubocop", "!sorbet", "..."]
+    },
+    // Python: native (basedpyright + ruff). Interpreter auto-detected from the
+    // project's uv-created .venv (mise Python). Only organize imports on save;
+    // no ruff reformatting (formatter disabled).
+    "Python": {
+      "format_on_save": "on",
+      "formatter": [],
+      "code_actions_on_format": {
+        "source.organizeImports.ruff": true
+      }
+    },
+    "JavaScript": {
+      "format_on_save": "on",
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true
+      }
+    },
+    "TypeScript": {
+      "format_on_save": "on",
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true
+      }
+    },
+    "TSX": {
+      "format_on_save": "on",
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true
+      }
+    }
+  },
+  "lsp": {
+    // ESLint language server (used by the fixAll code action above).
+    "eslint": {
+      "settings": {
+        "codeActionOnSave": {
+          "mode": "all"
+        }
+      }
+    },
+    // basedpyright: workspace-wide diagnostics + basic type-checking mode
+    // (matches the neovim basedpyright setup).
+    "basedpyright": {
+      "settings": {
+        "basedpyright": {
+          "analysis": {
+            "diagnosticMode": "workspace",
+            "typeCheckingMode": "basic"
+          }
+        }
+      }
+    },
+    // vtsls: inlay hints + memory limit for large projects.
+    "vtsls": {
+      "settings": {
+        "typescript": {
+          "tsserver": { "maxTsServerMemory": 16384 },
+          "inlayHints": {
+            "parameterNames": { "enabled": "all", "suppressWhenArgumentMatchesName": false },
+            "parameterTypes": { "enabled": true },
+            "variableTypes": { "enabled": true, "suppressWhenTypeMatchesName": true },
+            "propertyDeclarationTypes": { "enabled": true },
+            "functionLikeReturnTypes": { "enabled": true },
+            "enumMemberValues": { "enabled": true }
+          }
+        },
+        "javascript": {
+          "tsserver": { "maxTsServerMemory": 16384 },
+          "inlayHints": {
+            "parameterNames": { "enabled": "all", "suppressWhenArgumentMatchesName": false },
+            "parameterTypes": { "enabled": true },
+            "variableTypes": { "enabled": true, "suppressWhenTypeMatchesName": true },
+            "propertyDeclarationTypes": { "enabled": true },
+            "functionLikeReturnTypes": { "enabled": true },
+            "enumMemberValues": { "enabled": true }
+          }
+        }
+      }
+    }
+  },
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
+  "ui_font_family": "DejaVuSansM Nerd Font Mono",
+  "buffer_font_family": "DejaVuSansM Nerd Font Mono",
+  "theme": {
+      "mode": "dark",
+      "light": "Catppuccin Latte",
+      "dark": "Catppuccin Frappé"
+  },
+}
