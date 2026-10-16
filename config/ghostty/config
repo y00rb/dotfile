@@ -11,7 +11,7 @@ font-size = 15
 # Window
 window-theme = auto
 window-decoration = auto
-window-padding-x = 10
+window-padding-x = 4
 window-padding-y = 10
 window-padding-balance = true
 resize-overlay = never
